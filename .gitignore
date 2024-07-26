@@ -1,0 +1,46 @@
+node_modules
+dist
+dist-ssr
+*.local
+
+.idea
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+
+# Build artifacts
+dist/
+build/
+
+# Dependency directories
+node_modules/
+npm-cache/
+
+# IDE-specific files
+.vscode/
+*.suo
+*.ntvs*
+*.user
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Editor files
+*.swp
+.DS_Store
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+.cache/
+.idea/
+.eslintcache/
