@@ -4,6 +4,7 @@ import morgan from "morgan";
 import * as dotenv from "dotenv";
 import { jobRouter } from "./routes/jobRouter.js";
 import mongoose from "mongoose";
+import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
 dotenv.config();
 
@@ -30,10 +31,7 @@ app.use("*", (req, res) => {
 });
 
 // ERROR MIDDLEWARE (must be the last one)(valid routes but returns an error)
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json({ msg: "something went wrong" });
-});
+app.use(errorHandlerMiddleware);
 
 // --------------------------- DATABASE AND PORT ----------------------------
 

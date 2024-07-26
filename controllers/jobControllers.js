@@ -1,3 +1,4 @@
+import { NotFoundError } from "../errors/customErrors.js";
 import jobModel from "../models/jobModel.js";
 import { StatusCodes } from "http-status-codes";
 
@@ -15,11 +16,7 @@ export const createJob = async (req, res) => {
 export const getJob = async (req, res) => {
   const { id } = req.params;
   const job = await jobModel.findById(id);
-  if (!job) {
-    res.status(404).json({ msg: `no job with id ${id}` });
-    return;
-  }
-
+  if (!job) throw new NotFoundError(`no job with id ${id}`);
   res.status(StatusCodes.OK).json({ job });
 };
 
@@ -28,19 +25,13 @@ export const updateJob = async (req, res) => {
   const updatedJob = await jobModel.findByIdAndUpdate(id, req.body, {
     new: true,
   }); // we want it to send the updated job that's why new: true
-  if (!updatedJob) {
-    res.status(404).json({ msg: `no job with id ${id}` });
-    return;
-  }
+  if (!updatedJob) throw new NotFoundError(`no job with id ${id}`);
 
   res.status(StatusCodes.OK).json({ msg: "job updated", updatedJob });
 };
 export const deleteJob = async (req, res) => {
   const { id } = req.params;
   const removedJob = await jobModel.findByIdAndDelete(id);
-  if (!removedJob) {
-    res.status(404).json({ msg: `no job with id ${id}` });
-    return;
-  }
+  if (!removedJob) throw new NotFoundError(`no job with id ${id}`);
   res.status(StatusCodes.OK).json({ msg: "job deleted", removedJob });
 };
