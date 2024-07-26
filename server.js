@@ -8,6 +8,7 @@ import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authRouter } from "./routes/authRouter.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 import cookieParser from "cookie-parser";
+import { userRouter } from "./routes/userRouter.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 // -------------------------- CRUD -----------------------------------
 
 app.use("/api/v1/jobs", authenticateUser, jobRouter); // authenticate user in the entire job route
+app.use("/api/v1/users", authenticateUser, userRouter); // authenticate user in the entire user route
 app.use("/api/v1/auth", authRouter);
 
 // -------------------------------------------------------
