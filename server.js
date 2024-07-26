@@ -2,8 +2,9 @@ import "express-async-errors"; // prevents server from crashing in case of async
 import express from "express";
 import morgan from "morgan";
 import * as dotenv from "dotenv";
-import { jobRouter } from "./routes/jobRouter.js";
 import mongoose from "mongoose";
+import { jobRouter } from "./routes/jobRouter.js";
+import { validateTest } from "./middlewares/validationMiddleware.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
 dotenv.config();
@@ -18,6 +19,11 @@ if (NODE_ENV === "development") {
 }
 
 app.use(express.json());
+
+app.post("/api/v1/test", validateTest, (req, res) => {
+  const { name } = req.body;
+  res.json({ message: `hello ${name}` });
+});
 
 // -------------------------- CRUD -----------------------------------
 
