@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import { jobRouter } from "./routes/jobRouter.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
+import { authRouter } from "./routes/authRouter.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 // -------------------------- CRUD -----------------------------------
 
 app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/auth", authRouter);
 
 // -------------------------------------------------------
 
