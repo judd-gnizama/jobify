@@ -30,6 +30,13 @@ export const loginUser = async (req, res) => {
   });
   // 'token' can be any string name
   // add 1day
+  res.status(StatusCodes.OK).json({ msg: "user logged in!" });
+};
 
-  res.status(StatusCodes.OK).json({ msg: "login successfully" });
+export const logout = (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "user logged out!" });
 };
