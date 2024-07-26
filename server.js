@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import { jobRouter } from "./routes/jobRouter.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 import { authRouter } from "./routes/authRouter.js";
+import { authenticateUser } from "./middlewares/authMiddleware.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -18,11 +20,12 @@ if (NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(cookieParser());
 app.use(express.json());
 
 // -------------------------- CRUD -----------------------------------
 
-app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/jobs", authenticateUser, jobRouter); // authenticate user in the entire job route
 app.use("/api/v1/auth", authRouter);
 
 // -------------------------------------------------------
