@@ -24,6 +24,10 @@ if (NODE_ENV === "development") {
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/api/v1/test", (req, res) => {
+  res.json({ msg: "test route" });
+});
+
 // -------------------------- CRUD -----------------------------------
 
 app.use("/api/v1/jobs", authenticateUser, jobRouter); // authenticate user in the entire job route
