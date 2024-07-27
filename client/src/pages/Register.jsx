@@ -1,4 +1,10 @@
-import { Form, Link, redirect, useNavigation } from "react-router-dom";
+import {
+  Form,
+  Link,
+  redirect,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
 import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
 import { FormRow, Logo } from "../components";
 import customFetch from "../utils/customFetch";
@@ -22,8 +28,8 @@ export const registerAction = async ({ request }) => {
 
 const Register = () => {
   const navigation = useNavigation();
-  console.log(navigation);
   const isSubmitting = navigation.state === "submitting";
+  const actionData = useActionData(); // this is an optional hook to get the values returned from action. Can be used for errors
 
   return (
     <Wrapper>

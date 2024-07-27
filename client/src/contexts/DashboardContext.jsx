@@ -4,7 +4,7 @@ import { checkDefaultTheme } from "../App";
 const DashboardContext = createContext();
 
 const DashboardContextProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: "judd" });
+  const [user, setUser] = useState({ name: "n/a" });
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme());
 

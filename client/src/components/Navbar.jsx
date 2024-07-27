@@ -2,11 +2,12 @@ import Wrapper from "../assets/wrappers/Navbar";
 import { MdMenu } from "react-icons/md";
 import Logo from "./Logo";
 import { useContext } from "react";
-import { DashboardContext } from "../contexts/DashboardContext";
 import LogoutContainer from "./LogoutContainer";
 import ThemeToggle from "./ThemeToggle";
+import { dashboardContext } from "../pages/DashboardLayout";
+
 const Navbar = () => {
-  const { toggleSidebar } = useContext(DashboardContext);
+  const { toggleSidebar } = useContext(dashboardContext);
 
   return (
     <Wrapper>
