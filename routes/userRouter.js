@@ -6,6 +6,7 @@ import {
 } from "../controllers/userControllers.js";
 import { validateUpdateUserInput } from "../middlewares/validationMiddleware.js";
 import { authorizePermissions } from "../middlewares/authMiddleware.js";
+import upload from "../middlewares/multerMiddleware.js";
 
 const router = Router();
 
@@ -14,6 +15,13 @@ router.get("/admin/app-stats", [
   authorizePermissions("admin"),
   getApplicationStats,
 ]); // square brackets are optional
-router.patch("/update-user", validateUpdateUserInput, updateUser);
+
+// do upload middleware before validateUpdateUserInput
+router.patch(
+  "/update-user",
+  upload.single("avatar"),
+  validateUpdateUserInput,
+  updateUser
+);
 
 export { router as userRouter };

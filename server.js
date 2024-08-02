@@ -12,13 +12,19 @@ import { userRouter } from "./routes/userRouter.js";
 import { dirname } from "path";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import cloudinary from "cloudinary";
 dotenv.config();
 
 const app = express();
 
 const NODE_ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 5100;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
