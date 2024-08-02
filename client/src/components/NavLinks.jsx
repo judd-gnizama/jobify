@@ -4,22 +4,25 @@ import { useContext } from "react";
 import { dashboardContext } from "../pages/DashboardLayout";
 
 const NavLinks = ({ isBigSidebar }) => {
-  const { toggleSidebar } = useContext(dashboardContext);
+  const { toggleSidebar, user } = useContext(dashboardContext);
 
   return (
     <div className="nav-links">
-      {links.map(({ text, path, icon }) => (
-        <NavLink
-          to={path}
-          key={text}
-          className="nav-link"
-          onClick={isBigSidebar ? null : toggleSidebar}
-          end
-        >
-          <span className="icon">{icon}</span>
-          {text}
-        </NavLink>
-      ))}
+      {links.map(({ text, path, icon }) => {
+        if (path === "admin" && user.role !== "admin") return;
+        return (
+          <NavLink
+            to={path}
+            key={text}
+            className="nav-link"
+            onClick={isBigSidebar ? null : toggleSidebar}
+            end
+          >
+            <span className="icon">{icon}</span>
+            {text}
+          </NavLink>
+        );
+      })}
     </div>
   );
 };
