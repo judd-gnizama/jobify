@@ -9,6 +9,9 @@ import { authRouter } from "./routes/authRouter.js";
 import { authenticateUser } from "./middlewares/authMiddleware.js";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/userRouter.js";
+import { dirname } from "path";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -17,10 +20,13 @@ const app = express();
 const NODE_ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 5100;
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 if (NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(cookieParser());
 app.use(express.json());
 
