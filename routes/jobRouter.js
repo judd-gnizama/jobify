@@ -4,6 +4,7 @@ import {
   deleteJob,
   getAllJobs,
   getJob,
+  showStats,
   updateJob,
 } from "../controllers/jobControllers.js";
 import {
@@ -16,6 +17,9 @@ const router = Router();
 
 router.get("/", getAllJobs);
 router.post("/", checkForTestUser, validateJobInput, createJob);
+
+router.get("/stats", showStats); // placed it before /:id so that it does get interpreted as id
+
 router.get("/:id", validateIdParam, getJob);
 router.patch(
   "/:id",

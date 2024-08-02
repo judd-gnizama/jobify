@@ -1,6 +1,7 @@
-import { NotFoundError } from "../errors/customErrors.js";
 import jobModel from "../models/jobModel.js";
 import { StatusCodes } from "http-status-codes";
+import mongoose from "mongoose";
+import dayjs from "dayjs";
 
 export const getAllJobs = async (req, res) => {
   console.log(req.user.userId);
@@ -29,4 +30,54 @@ export const updateJob = async (req, res) => {
 export const deleteJob = async (req, res) => {
   const removedJob = await jobModel.findByIdAndDelete(req.params.id);
   res.status(StatusCodes.OK).json({ msg: "job deleted", removedJob });
+};
+
+export const showStats = async (req, res) => {
+  let stats = await jobModel.aggregate([
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+    { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
+  ]);
+
+  stats = stats.reduce((acc, current) => {
+    const { _id: title, count } = current;
+    acc[title] = count;
+    return acc;
+  }, {});
+
+  let monthlyApplications = await jobModel.aggregate([
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+    {
+      $group: {
+        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+        count: { $sum: 1 },
+      },
+    },
+    // -1 means reversed order
+    { $sort: { "_id.year": -1, "_id.month": -1 } },
+    { $limit: 6 },
+  ]);
+
+  monthlyApplications = monthlyApplications
+    .map((item) => {
+      const {
+        _id: { year, month },
+        count,
+      } = item;
+
+      const date = dayjs()
+        .month(month - 1)
+        .year(year)
+        .format("MMM YY"); // dayjs months start with 0
+
+      return { date, count };
+    })
+    .reverse();
+
+  const defaultStats = {
+    pending: stats.pending || 0,
+    interview: stats.interview || 0,
+    declined: stats.declined || 0,
+  };
+
+  res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
 };

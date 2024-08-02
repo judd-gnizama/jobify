@@ -7,3 +7,7 @@ export { default as FormRowSelect } from "./FormRowSelect";
 export { default as JobsContainer } from "./JobsContainer";
 export { default as SearchContainer } from "./SearchContainer";
 export { default as SubmitBtn } from "./SubmitBtn";
+export { default as AreaChart } from "./AreaChartComp";
+export { default as BarChart } from "./BarChartComp";
+export { default as ChartsContainer } from "./ChartsContainer";
+export { default as StatsContainer } from "./StatsContainer";
