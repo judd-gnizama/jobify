@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import dayjs from "dayjs";
 
 export const getAllJobs = async (req, res) => {
-  const { search, jobStatus, jobType, sort } = req.query;
+  const { search, jobStatus, jobType, sort, page, limit } = req.query;
   const queryObject = {
     createdBy: req.user.userId,
   };
@@ -32,8 +32,21 @@ export const getAllJobs = async (req, res) => {
 
   const sortKey = sortOptions[sort] || sortOptions.newest;
 
-  const jobs = await jobModel.find(queryObject).sort(sortKey);
-  res.status(StatusCodes.OK).json({ jobs });
+  // setup pagination
+  const currentPage = Number(page) || 1;
+  const itemsPerPage = Number(limit) || 10;
+  const skip = (currentPage - 1) * itemsPerPage;
+
+  const jobs = await jobModel
+    .find(queryObject)
+    .sort(sortKey)
+    .skip(skip)
+    .limit(limit);
+
+  const totalJobs = await jobModel.countDocuments(queryObject);
+  const numOfPages = Math.ceil(totalJobs / limit);
+
+  res.status(StatusCodes.OK).json({ totalJobs, numOfPages, currentPage, jobs });
 };
 
 export const createJob = async (req, res) => {
