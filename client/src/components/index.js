@@ -12,3 +12,4 @@ export { default as BarChart } from "./BarChartComp";
 export { default as ChartsContainer } from "./ChartsContainer";
 export { default as StatsContainer } from "./StatsContainer";
 export { default as Loading } from "./Loading";
+export { default as ErrorElement } from "./ErrorElement";

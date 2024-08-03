@@ -11,11 +11,19 @@ import customFetch from "../utils/customFetch";
 import { createContext, useState } from "react";
 import { checkDefaultTheme } from "../App";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
-export const dashboardLoader = async () => {
-  try {
+const userQuery = {
+  queryKey: ["user"],
+  queryFn: async () => {
     const { data } = await customFetch.get("/users/current-user");
     return data;
+  },
+};
+
+export const dashboardLoader = (queryClient) => async () => {
+  try {
+    return await queryClient.ensureQueryData(userQuery);
   } catch (error) {
     return redirect("/"); // back to homepage because the user might be unauthorized. must login again
   }
@@ -23,8 +31,9 @@ export const dashboardLoader = async () => {
 
 export const dashboardContext = createContext();
 
-const DashboardLayout = () => {
-  const { user } = useLoaderData(); // allows us to get data even before component loads
+const DashboardLayout = ({ queryClient }) => {
+  const { user } = useQuery(userQuery).data;
+  // const { user } = useLoaderData(); // allows us to get data even before component loads
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isPageLoading = navigation.state === "loading";
@@ -44,6 +53,7 @@ const DashboardLayout = () => {
   const logoutUser = async () => {
     navigate("/");
     await customFetch.get("/auth/logout");
+    queryClient.invalidateQueries();
     toast.success("Logged out...");
   };
 
