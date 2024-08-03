@@ -91,7 +91,6 @@ const PageBtnContainer = () => {
         }}
       >
         <HiChevronDoubleLeft />
-        prev
       </button>
       <div className="btn-container">{renderPageButtons()}</div>
       <button
@@ -102,7 +101,6 @@ const PageBtnContainer = () => {
         }}
       >
         <HiChevronDoubleRight />
-        next
       </button>
     </Wrapper>
   );
