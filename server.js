@@ -48,6 +48,11 @@ app.use("/api/v1/auth", authRouter);
 
 // -------------------------------------------------------
 
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+});
+
+// -------------------------------------------------------
 // NOT FOUND MIDDLEWARE (checks all requests for a route that does not exist)
 app.use("*", (req, res) => {
   res.status(404).json({ msg: "404 not found" });
