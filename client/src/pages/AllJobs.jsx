@@ -31,6 +31,7 @@ export const allJobsLoader =
       ...new URL(request.url).searchParams.entries(),
     ]);
     await queryClient.ensureQueryData(allJobsQuery(params));
+
     return { searchValues: { ...params } };
   };
 

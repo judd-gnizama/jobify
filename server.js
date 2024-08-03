@@ -13,6 +13,8 @@ import { dirname } from "path";
 import path from "path";
 import { fileURLToPath } from "url";
 import cloudinary from "cloudinary";
+import helmet from "helmet";
+import ExpressMongoSanitize from "express-mongo-sanitize";
 dotenv.config();
 
 const app = express();
@@ -36,9 +38,8 @@ app.use(express.static(path.resolve(__dirname, "./client/dist")));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/api/v1/test", (req, res) => {
-  res.json({ msg: "test route" });
-});
+app.use(helmet());
+app.use(ExpressMongoSanitize());
 
 // -------------------------- CRUD -----------------------------------
 

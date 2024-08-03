@@ -8,7 +8,7 @@ import {
 import Wrapper from "../assets/wrappers/Dashboard";
 import { BigSidebar, Loading, Navbar, SmallSidebar } from "../components";
 import customFetch from "../utils/customFetch";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { checkDefaultTheme } from "../App";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
@@ -39,6 +39,7 @@ const DashboardLayout = ({ queryClient }) => {
   const isPageLoading = navigation.state === "loading";
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme());
+  const [isAuthError, setIsAuthError] = useState(false);
 
   const toggleDarkTheme = () => {
     setIsDarkTheme(!isDarkTheme);
@@ -56,6 +57,23 @@ const DashboardLayout = ({ queryClient }) => {
     queryClient.invalidateQueries();
     toast.success("Logged out...");
   };
+
+  customFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error?.response?.status === 401) {
+        setIsAuthError(true);
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  useEffect(() => {
+    if (!isAuthError) return;
+    logoutUser();
+  }, [isAuthError]);
 
   return (
     <dashboardContext.Provider
