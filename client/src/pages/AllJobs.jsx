@@ -5,10 +5,13 @@ import JobsContainer from "../components/JobsContainer";
 import SearchContainer from "../components/SearchContainer";
 import { createContext } from "react";
 
-export const allJobsLoader = async () => {
+export const allJobsLoader = async ({ request }) => {
+  const params = Object.fromEntries([
+    ...new URL(request.url).searchParams.entries(),
+  ]);
   try {
-    const { data } = await customFetch.get("/jobs");
-    return { data };
+    const { data } = await customFetch.get("/jobs", { params });
+    return { data, searchValues: { ...params } };
   } catch (error) {
     toast.error(error?.response?.data?.msg);
     return error;
@@ -18,9 +21,9 @@ export const allJobsLoader = async () => {
 export const allJobsContext = createContext();
 
 const AllJobs = () => {
-  const { data } = useLoaderData();
+  const { data, searchValues } = useLoaderData();
   return (
-    <allJobsContext.Provider value={{ data }}>
+    <allJobsContext.Provider value={{ data, searchValues }}>
       <SearchContainer />
       <JobsContainer />
     </allJobsContext.Provider>
