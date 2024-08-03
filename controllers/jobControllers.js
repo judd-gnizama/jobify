@@ -41,7 +41,7 @@ export const getAllJobs = async (req, res) => {
     .find(queryObject)
     .sort(sortKey)
     .skip(skip)
-    .limit(limit);
+    .limit(itemsPerPage);
 
   const totalJobs = await jobModel.countDocuments(queryObject);
   const numOfPages = Math.ceil(totalJobs / itemsPerPage);
